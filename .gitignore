@@ -1,0 +1,21 @@
+# Java
+ target/
+*.class
+# IDE
+.idea/
+*.iml
+.vscode/
+# Node
+node_modules/
+.next/
+out/
+# Environment
+.env
+.env.*
+!.env.example
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+# OS
+.DS_Store
