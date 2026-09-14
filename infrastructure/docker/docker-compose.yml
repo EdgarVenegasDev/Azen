@@ -1,3 +1,0 @@
-# Local development infrastructure placeholder.
-# PostgreSQL, Kafka, Kafka UI and monitoring will be added by development phase.
-services: {}

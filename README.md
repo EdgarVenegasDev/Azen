@@ -8,6 +8,5 @@ Open Source platform for managing and optimizing recurring subscriptions and exp
 - infrastructure/docker/ — local development infrastructure
 - infrastructure/terraform/ — cloud infrastructure as code
 - docs/ — project documentation
-- architecture/ — diagrams and ADRs
 - .github/ — CI/CD and collaboration
 # Azen
