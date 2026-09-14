@@ -3,10 +3,8 @@
 Open Source platform for managing and optimizing recurring subscriptions and expenses.
 
 ## Structure
-- backend/ — Spring Boot backend and microservices
+- backend/ — 
 - frontend/ — 
-- infrastructure/docker/ — local development infrastructure
-- infrastructure/terraform/ — cloud infrastructure as code
 - docs/ — project documentation
 - .github/ — CI/CD and collaboration
 # Azen
