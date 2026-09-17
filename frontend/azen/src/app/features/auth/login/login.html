@@ -1,0 +1,140 @@
+<div class="auth-page">
+  <div class="auth-container">
+
+    <div class="auth-header">
+      <h1 class="brand">AZEN</h1>
+
+      <p>
+        manage your subscriptions.
+      </p>
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+
+      <!-- Email -->
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.invalid
+        ) {
+          <span class="error-message">
+            @if (loginForm.controls.email.errors?.['required']) {
+              Email is required.
+            }
+
+            @if (loginForm.controls.email.errors?.['email']) {
+              Please enter a valid email.
+            }
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Password -->
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+        />
+
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.invalid
+        ) {
+          <span class="error-message">
+
+            @if (loginForm.controls.password.errors?.['required']) {
+              Password is required.
+            }
+
+            @if (loginForm.controls.password.errors?.['minlength']) {
+              Password must contain at least 8 characters.
+            }
+
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Options -->
+      <div class="form-options">
+
+        <label class="remember">
+
+          <input
+            type="checkbox"
+          />
+
+          <span>
+            Remember me
+          </span>
+
+        </label>
+
+        <a href="#">
+          Forgot password?
+        </a>
+
+      </div>
+
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        [disabled]="isSubmitting"
+      >
+
+        @if (isSubmitting) {
+          Signing in...
+        } @else {
+          Sign in
+        }
+
+      </button>
+
+    </form>
+
+
+    <!-- Register -->
+    <div class="auth-footer">
+
+      <span>
+        Don't have an account?
+      </span>
+
+      <a routerLink="/register">
+        Create account
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
