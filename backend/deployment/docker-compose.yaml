@@ -1,5 +1,5 @@
 services:
-  # ==================== INFRASTRUCTURE ====================
+# ==================== INFRASTRUCTURE ====================
   postgres-auth-service:
     image: postgres:18
     container_name: postgres-auth-service
@@ -21,6 +21,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+
+# =================== SERVICES ========================
 
 # ==================== VOLUMES ====================
 volumes:

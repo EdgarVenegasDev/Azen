@@ -1,5 +1,6 @@
 package com.azue.authservice.domain.entity;
 
+import com.azue.authservice.domain.enums.Role;
 import com.azue.authservice.domain.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -35,6 +36,10 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserStatus status;
 
     @CreationTimestamp
@@ -54,13 +59,14 @@ public class User {
         user.lastName = lastName;
         user.email = email;
         user.password = password;
+        user.role = Role.USER;
         user.status = UserStatus.ACTIVE;
         return user;
     }
 
-    // ----------------- //
-    // Domain mutators    //
-    // ----------------- //
+    // ------------------//
+    // Domain mutators //
+    // --------------//
 
     public void updateName(String firstName, String lastName) {
         this.firstName = firstName;
@@ -73,6 +79,10 @@ public class User {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void changeRole(Role role) {
+        this.role = role;
     }
 
     public void activate() {
