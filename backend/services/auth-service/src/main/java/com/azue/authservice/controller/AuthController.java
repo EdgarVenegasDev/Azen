@@ -32,7 +32,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(authService.register(registerRequest));
+        authService.register(registerRequest);
+        return ResponseEntity.ok("user created succen.");
     }
 
 }

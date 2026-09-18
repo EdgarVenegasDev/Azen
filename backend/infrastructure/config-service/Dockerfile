@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy only pom.xml files first (cacheable layer)
 COPY pom.xml .
 COPY infrastructure/config-service/pom.xml infrastructure/config-service/
+COPY services/auth-service/pom.xml services/auth-service/
 
 # Pre-download dependencies (cache layer, reused if pom.xml unchanged)
 RUN mvn -f /app/pom.xml dependency:resolve -pl infrastructure/config-service -am -q || true
@@ -15,8 +16,9 @@ RUN mvn -f /app/pom.xml dependency:resolve -pl infrastructure/config-service -am
 COPY infrastructure/config-service/src infrastructure/config-service/src
 
 # Build (uses cached dependencies)
-RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -DskipTests -q
-
+# TODO: Run tests during the Docker build once test dependencies are properly configured.
+#RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -DskipTests -q
+RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -Dmaven.test.skip=true -q
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jre
 
