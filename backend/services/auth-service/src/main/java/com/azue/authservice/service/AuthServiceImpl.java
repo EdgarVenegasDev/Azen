@@ -5,6 +5,7 @@ import com.azue.authservice.domain.entity.User;
 import com.azue.authservice.dto.request.LoginRequest;
 import com.azue.authservice.dto.request.RegisterRequest;
 import com.azue.authservice.dto.response.AuthResponse;
+import com.azue.authservice.exception.custom.DuplicateResourceException;
 import com.azue.authservice.exception.custom.InvalidTokenException;
 import com.azue.authservice.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,17 +13,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final AuthRepository authRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,11 +56,15 @@ public class AuthServiceImpl implements AuthService{
     @Override
     @Transactional()
     public User register(RegisterRequest request) {
+        if (authRepository.existsByEmail(request.email())) {
+            throw new DuplicateResourceException("Email already exists: " + request.email());
+        }
         User user = User.create(
-                request.email(),
-                request.password(),
                 request.firstName(),
-                request.lastName());
+                request.lastName(),
+                request.email(),
+                passwordEncoder.encode(request.password())
+        );
         return authRepository.save(user);
 //        return login(new LoginRequest(request.email(), request.password()));
     }

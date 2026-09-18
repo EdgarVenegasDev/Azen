@@ -6,11 +6,20 @@ auth-service:
     password-strength: ${AUTH_SERVICE_PASSWORD_STRENGTH:10}
     client-origin: ${AUTH_SERVICE_CLIENT_ORIGIN:http://localhost:3000}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
 logging:
   level:
     org.hibernate: warn
     org.springframework.jdbc: warn
-    com.medsync.authservice: info
+    com.azen.authservice: info
 
 server:
   port: ${AUTH_SERVICE_PORT:8081}
