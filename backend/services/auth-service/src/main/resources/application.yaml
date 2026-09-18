@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: auth-service
+
+  profiles:
+    active: ${AUTH_SERVICE_PROFILE:dev}
+
+  config:
+    import: optional:configserver:http://${CONFIG_SERVICE_HOSTNAME:localhost}:${CONFIG_SERVICE_PORT:8888}

@@ -1,0 +1,103 @@
+services:
+# ==================== INFRASTRUCTURE ====================
+  postgres-auth-service:
+    image: postgres:18
+    container_name: postgres-auth-service
+    restart: unless-stopped
+    env_file:
+      - ./.env.docker
+    environment:
+      POSTGRES_DB: ${AUTH_SERVICE_DB_NAME}
+      POSTGRES_USER: ${AUTH_SERVICE_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_SERVICE_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-volume-auth-service:/var/lib/postgresql
+    networks:
+      - azen-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${AUTH_SERVICE_DB_USER} -d ${AUTH_SERVICE_DB_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+# =================== SERVICES ========================
+  # ================== CONFIG SERVICE ====================
+  config-service:
+    build:
+      context: ..
+      dockerfile: infrastructure/config-service/Dockerfile
+    container_name: config-service
+    restart: unless-stopped
+    environment:
+      CONFIG_SERVICE_PORT: ${CONFIG_SERVICE_PORT}
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+    ports:
+      - "8888:8888"
+    networks:
+      - azen-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    depends_on:
+      postgres-auth-service:
+        condition: service_healthy
+  # ==================== AUTH SERVICE ====================
+
+  auth-service:
+    build:
+      context: ..
+      dockerfile: services/auth-service/Dockerfile
+    container_name: auth-service
+    restart: unless-stopped
+    env_file:
+      - ./.env.docker
+    environment:
+      AUTH_SERVICE_DB_URL: ${AUTH_SERVICE_DB_URL}
+      AUTH_SERVICE_DB_USER: ${AUTH_SERVICE_DB_USER}
+      AUTH_SERVICE_DB_PASSWORD: ${AUTH_SERVICE_DB_PASSWORD}
+
+      AUTH_SERVICE_PROFILE: ${AUTH_SERVICE_PROFILE}
+      AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT}
+      #CONFIG ENVIRONMENT VARIABLES OF JWT
+      AUTH_SERVICE_SECRET_KEY: ${AUTH_SERVICE_SECRET_KEY}
+      AUTH_SERVICE_ACCESS_TOKEN_EXPIRATION: ${AUTH_SERVICE_ACCESS_TOKEN_EXPIRATION}
+      AUTH_SERVICE_REFRESH_TOKEN_EXPIRATION: ${AUTH_SERVICE_REFRESH_TOKEN_EXPIRATION}
+      AUTH_SERVICE_PASSWORD_STRENGTH: ${AUTH_SERVICE_PASSWORD_STRENGTH}
+      AUTH_SERVICE_CLIENT_ORIGIN: ${AUTH_SERVICE_CLIENT_ORIGIN}
+      #CONFI OF CONFIG_SERVER
+      CONFIG_SERVICE_HOSTNAME: ${CONFIG_SERVICE_HOSTNAME}
+      CONFIG_SERVICE_PORT: ${CONFIG_SERVICE_PORT}
+
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+
+    ports:
+      - "8081:8081"
+
+    depends_on:
+      postgres-auth-service:
+        condition: service_healthy
+      config-service:
+        condition: service_healthy
+
+    networks:
+      - azen-network
+
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+# ==================== VOLUMES ====================
+volumes:
+  postgres-volume-auth-service:
+
+# ==================== NETWORKS ====================
+networks:
+  azen-network:
+    driver: bridge
