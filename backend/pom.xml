@@ -55,6 +55,7 @@
 
     <!-- Modules -->
     <modules>
+        <module>infrastructure/config-service</module>
     </modules>
 
     <!-- Dependency Management -->
