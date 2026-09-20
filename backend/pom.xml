@@ -56,6 +56,7 @@
     <!-- Modules -->
     <modules>
         <module>infrastructure/config-service</module>
+        <module>services/auth-service</module>
     </modules>
 
     <!-- Dependency Management -->
