@@ -172,60 +172,68 @@
 
 
       <!-- Confirm password -->
-      <div class="form-group">
+        <div class="form-group">
 
         <label for="confirmPassword">
-          Confirm password
+            Confirm password
         </label>
 
         <input
-          id="confirmPassword"
-          type="password"
-          formControlName="confirmPassword"
-          placeholder="Repeat your password"
-          autocomplete="new-password"
+            id="confirmPassword"
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
         />
 
         @if (
-          registerForm.controls.confirmPassword.touched &&
-          registerForm.controls.confirmPassword.invalid
+            registerForm.controls.confirmPassword.touched &&
+            registerForm.controls.confirmPassword.invalid
         ) {
-          <span class="error-message">
+            <span class="error-message">
 
             @if (
-              registerForm.controls.confirmPassword.errors?.['required']
+                registerForm.controls.confirmPassword.errors?.['required']
             ) {
-              Please confirm your password.
+                Please confirm your password.
             }
 
-          </span>
+            </span>
         }
 
         @if (
-          registerForm.controls.confirmPassword.touched &&
-          registerForm.errors?.['passwordMismatch']
+            registerForm.controls.confirmPassword.touched &&
+            registerForm.errors?.['passwordMismatch']
         ) {
-          <span class="error-message">
+            <span class="error-message">
             Passwords do not match.
-          </span>
+            </span>
         }
 
-      </div>
+        </div>
 
 
-      <!-- Submit -->
-      <button
+        <!-- General error -->
+        @if (errorMessage) {
+        <div class="error-message">
+            {{ errorMessage }}
+        </div>
+        }
+
+
+        <!-- Submit -->
+        <button
         type="submit"
         [disabled]="isSubmitting"
-      >
+        >
 
         @if (isSubmitting) {
-          Creating account...
+            Creating account...
         } @else {
-          Create account
+            Create account
         }
 
-      </button>
+        </button>
 
     </form>
 
