@@ -1,0 +1,256 @@
+<div class="auth-page">
+
+  <div class="auth-container">
+
+    <div class="auth-header">
+      <span class="brand">AZEN</span>
+
+      <h1>Create account</h1>
+    </div>
+
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+
+      <!-- First name -->
+      <div class="form-group">
+
+        <label for="firstName">
+          First name
+        </label>
+
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          placeholder="John"
+          autocomplete="given-name"
+        />
+
+        @if (
+          registerForm.controls.firstName.touched &&
+          registerForm.controls.firstName.invalid
+        ) {
+          <span class="error-message">
+
+            @if (
+              registerForm.controls.firstName.errors?.['required']
+            ) {
+              First name is required.
+            }
+
+            @if (
+              registerForm.controls.firstName.errors?.['minlength']
+            ) {
+              First name must contain at least 2 characters.
+            }
+
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Last name -->
+      <div class="form-group">
+
+        <label for="lastName">
+          Last name
+        </label>
+
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          placeholder="Doe"
+          autocomplete="family-name"
+        />
+
+        @if (
+          registerForm.controls.lastName.touched &&
+          registerForm.controls.lastName.invalid
+        ) {
+          <span class="error-message">
+
+            @if (
+              registerForm.controls.lastName.errors?.['required']
+            ) {
+              Last name is required.
+            }
+
+            @if (
+              registerForm.controls.lastName.errors?.['minlength']
+            ) {
+              Last name must contain at least 2 characters.
+            }
+
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Email -->
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
+
+        @if (
+          registerForm.controls.email.touched &&
+          registerForm.controls.email.invalid
+        ) {
+          <span class="error-message">
+
+            @if (
+              registerForm.controls.email.errors?.['required']
+            ) {
+              Email is required.
+            }
+
+            @if (
+              registerForm.controls.email.errors?.['email']
+            ) {
+              Please enter a valid email.
+            }
+
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Password -->
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Create a password"
+          autocomplete="new-password"
+        />
+
+        @if (
+          registerForm.controls.password.touched &&
+          registerForm.controls.password.invalid
+        ) {
+          <span class="error-message">
+
+            @if (
+              registerForm.controls.password.errors?.['required']
+            ) {
+              Password is required.
+            }
+
+            @if (
+              registerForm.controls.password.errors?.['minlength']
+            ) {
+              Password must contain at least 8 characters.
+            }
+
+          </span>
+        }
+
+      </div>
+
+
+      <!-- Confirm password -->
+        <div class="form-group">
+
+        <label for="confirmPassword">
+            Confirm password
+        </label>
+
+        <input
+            id="confirmPassword"
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+        />
+
+        @if (
+            registerForm.controls.confirmPassword.touched &&
+            registerForm.controls.confirmPassword.invalid
+        ) {
+            <span class="error-message">
+
+            @if (
+                registerForm.controls.confirmPassword.errors?.['required']
+            ) {
+                Please confirm your password.
+            }
+
+            </span>
+        }
+
+        @if (
+            registerForm.controls.confirmPassword.touched &&
+            registerForm.errors?.['passwordMismatch']
+        ) {
+            <span class="error-message">
+            Passwords do not match.
+            </span>
+        }
+
+        </div>
+
+
+        <!-- General error -->
+        @if (errorMessage) {
+        <div class="error-message">
+            {{ errorMessage }}
+        </div>
+        }
+
+
+        <!-- Submit -->
+        <button
+        type="submit"
+        [disabled]="isSubmitting"
+        >
+
+        @if (isSubmitting) {
+            Creating account...
+        } @else {
+            Create account
+        }
+
+        </button>
+
+    </form>
+
+
+    <!-- Login -->
+    <div class="auth-footer">
+
+      <span>
+        Already have an account?
+      </span>
+
+      <a routerLink="/login">
+        Sign in
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
