@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs';
+import { ConfigService } from '../config/config.service';
 
 import {
   AuthResponse,
@@ -13,10 +14,12 @@ import {
   providedIn: 'root'
 })
 export class AuthService {
+    private readonly config = inject(ConfigService);
+
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://localhost:8081/api/v1/auth';
+  `${this.config.apiUrl}/api/v1/auth`;
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
