@@ -57,16 +57,18 @@ export class Login {
     const credentials = this.loginForm.getRawValue();
 
     this.authService.login(credentials).subscribe({
-      next: (response) => {
-        console.log('Login successful');
+          next: (response) => {
+      console.log('Login successful');
 
-        this.authStore.setTokens(
-          response.accessToken,
-          response.refreshToken
-        );
+      this.authStore.setTokens(
+        response.accessToken,
+        response.refreshToken
+      );
 
-        this.isSubmitting = false;
-      },
+      this.isSubmitting = false;
+
+      this.router.navigate(['/dashboard']);
+    },
 
       error: (error) => {
         console.error('Login error:', error);
