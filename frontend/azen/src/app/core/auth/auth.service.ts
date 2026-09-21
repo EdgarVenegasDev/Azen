@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs';
 
 import {
   AuthResponse,
@@ -25,11 +26,16 @@ export class AuthService {
   }
 
   register(data: RegisterRequest): Observable<void> {
-    return this.http.post<void>(
-      `${this.apiUrl}/register`,
-      data
+    return this.http.post(
+        `${this.apiUrl}/register`,
+        data,
+        {
+        responseType: 'text'
+        }
+    ).pipe(
+        map(() => void 0)
     );
-  }
+    }
 
   refreshToken(
     refreshToken: string
