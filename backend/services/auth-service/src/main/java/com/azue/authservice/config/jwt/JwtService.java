@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,8 +42,8 @@ public class JwtService {
         Date expiry = new Date(now.getTime() + expiration);
 
         var builder = Jwts.builder()
-                .issuer("medsync-auth-service")
-                .audience().add("medsync-platform").and()
+                .issuer("azen-auth-service")
+                .audience().add("azen-platform").and()
                 .subject(userDetails.getUsername())
                 .issuedAt(now)
                 .notBefore(now)
@@ -102,5 +103,9 @@ public class JwtService {
 
     private SecretKey getSignInKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(authSecurityProperties.getSecretKey()));
+    }
+
+    public Instant getRefreshTokenExpiryDate() {
+        return Instant.now().plusMillis(authSecurityProperties.getRefreshTokenExpiration());
     }
 }

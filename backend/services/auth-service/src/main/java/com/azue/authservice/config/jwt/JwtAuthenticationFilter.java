@@ -13,14 +13,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
+// Ajuste recomendado en JwtAuthenticationFilter.java
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -37,9 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             var claims = jwtService.parse(token);
 
-            // Prevent refresh token from being used as access token
             if (!"access".equals(claims.get("type", String.class))) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                filterChain.doFilter(request, response);
                 return;
             }
 
@@ -56,13 +58,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
+            filterChain.doFilter(request, response);
 
         } catch (JwtException | IllegalArgumentException ex) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            handlerExceptionResolver.resolveException(request, response, null, ex);
         }
-
-        filterChain.doFilter(request, response);
     }
-
 }

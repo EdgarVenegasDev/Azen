@@ -19,3 +19,6 @@ out/
 *.tfstate.*
 # OS
 .DS_Store
+
+logs/
+*.log
