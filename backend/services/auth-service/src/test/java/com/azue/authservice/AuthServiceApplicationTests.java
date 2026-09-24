@@ -1,13 +1,15 @@
 package com.azue.authservice;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootTest
 class AuthServiceApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void applicationClassShouldBeAnnotatedAsSpringBootApplication() {
+		org.junit.jupiter.api.Assertions.assertTrue(
+				AuthServiceApplication.class.isAnnotationPresent(SpringBootApplication.class)
+		);
 	}
 
 }

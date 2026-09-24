@@ -67,7 +67,6 @@ public class User {
     // ------------------//
     // Domain mutators //
     // --------------//
-
     public void updateName(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;

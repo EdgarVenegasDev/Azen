@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -37,6 +38,7 @@ public class SecurityConfig {
 
     private final AuthEntryPointJwt authEntryPointJwt;
     private final AuthSecurityProperties authSecurityProperties;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
@@ -57,7 +59,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
-        return new JwtAuthenticationFilter(jwtService, userDetailsService);
+        return new JwtAuthenticationFilter(jwtService, userDetailsService,handlerExceptionResolver);
     }
 
     @Bean
