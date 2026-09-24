@@ -17,8 +17,8 @@ COPY infrastructure/config-service/src infrastructure/config-service/src
 
 # Build (uses cached dependencies)
 # TODO: Run tests during the Docker build once test dependencies are properly configured.
-#RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -DskipTests -q
-RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -Dmaven.test.skip=true -q
+RUN mvn -f /app/pom.xml clean package -pl infrastructure/config-service -am -DskipTests -q
+
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jre
 

@@ -3,11 +3,14 @@ spring:
     name: config-service
   profiles:
     active: native
+  config:
+    import: classpath:./config/common/application.yaml
   cloud:
     config:
       server:
         native:
           search-locations:
+            - classpath:./config/common
             - classpath:./config/{application}
 server:
   port: ${CONFIG_SERVICE_PORT:8080}

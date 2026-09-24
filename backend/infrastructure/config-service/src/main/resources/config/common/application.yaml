@@ -1,0 +1,29 @@
+# Console output
+spring:
+  output:
+    ansi:
+      enabled: detect
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Logging configuration
+logging:
+  level:
+    root: info
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr([%thread]){faint} %clr(%-5level){highlight} %clr(%logger{36}){cyan} %clr(-){faint} %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} - [%thread] %-5level - %logger{36} - %msg%n"
+  file:
+    name: ./logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
